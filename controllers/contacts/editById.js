@@ -1,12 +1,11 @@
 const { joiContactSchema } = require("../../validation/contacts");
-
-const Contact = require("../../models/contact");
+const Contact = require("../../models/contacts/contact");
 
 const editById = async (req, res, next) => {
 	try {
 		const { error } = joiContactSchema.validate(req.body);
 		if (error) {
-			res.json({
+			res.status(400).json({
 				status: "error",
 				code: 400,
 				message: "Bad request",
@@ -20,7 +19,7 @@ const editById = async (req, res, next) => {
 		});
 
 		if (!result) {
-			res.json({
+			res.status(404).json({
 				status: "error",
 				code: 404,
 				message: "Not found",
@@ -28,7 +27,7 @@ const editById = async (req, res, next) => {
 			return;
 		}
 
-		res.json({
+		res.status(200).json({
 			status: "success",
 			code: 200,
 			data: {

@@ -1,3 +1,3 @@
-const handleValidationError = require("./handleValidationError");
+const handleSchemaValidationError = require("./handleValidationError");
 
-module.exports = { handleValidationError };
+module.exports = { handleSchemaValidationError };
