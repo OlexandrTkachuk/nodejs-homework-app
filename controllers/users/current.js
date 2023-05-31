@@ -6,6 +6,7 @@ const getCurrentUser = async (req, res) => {
 			user: {
 				email: req.user.email,
 				subscription: req.user.subscription,
+				avatarUrl: req.user.avatarUrl,
 			},
 		},
 	});
