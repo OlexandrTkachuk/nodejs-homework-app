@@ -19,4 +19,8 @@ router.patch(
 
 router.patch("/", authTokenCheck, ctrl.updateSubscription);
 
+router.get("/verify/:verificationToken", authTokenCheck, ctrl.verifyEmail);
+
+router.post("/verify", authTokenCheck, ctrl.resendEmail);
+
 module.exports = router;
