@@ -12,12 +12,11 @@ const login = async (req, res, next) => {
 
 		if (error) {
 			console.log(error);
-			res.status(400).json({
+			return res.status(400).json({
 				status: "error",
 				code: 400,
 				message: "Bad request",
 			});
-			return;
 		}
 
 		const { email, password } = req.body;
@@ -25,32 +24,29 @@ const login = async (req, res, next) => {
 		const user = await User.findOne({ email });
 
 		if (!user) {
-			res.status(401).json({
+			return res.status(401).json({
 				status: "error",
 				code: 401,
 				message: "Email is wrong",
 			});
-			return;
 		}
 
 		const comparePassword = bcrypt.compareSync(password, user.password);
 
 		if (!comparePassword) {
-			res.status(401).json({
+			return res.status(401).json({
 				status: "error",
 				code: 401,
 				message: "Password is wrong",
 			});
-			return;
 		}
 
 		if (!user.verify) {
-			res.status(401).json({
+			return res.status(401).json({
 				status: "error",
 				code: 401,
 				message: "Email is not verified",
 			});
-			return;
 		}
 
 		const payload = {

@@ -1,10 +1,6 @@
 const User = require("../../models/users/user");
-const sgMail = require("@sendgrid/mail");
-require("dotenv").config();
-
-const { SENDGRID_API_KEY, EMAIL } = process.env;
-
-sgMail.setApiKey(SENDGRID_API_KEY);
+const sendEmail = require("../../helpers/sendEmail");
+const { EMAIL } = process.env;
 
 const resendEmail = async (req, res, next) => {
 	try {
@@ -33,16 +29,7 @@ const resendEmail = async (req, res, next) => {
       `,
 		};
 
-		sgMail.send(verifyEmail).then(
-			() => {},
-			(error) => {
-				console.error(error);
-
-				if (error.response) {
-					console.error(error.response.body);
-				}
-			}
-		);
+		await sendEmail(verifyEmail);
 
 		res.json({
 			message: "Verification email sent",
