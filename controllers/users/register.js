@@ -5,6 +5,7 @@ const { sendEmail } = require("../../helpers");
 
 const { joiUserRegisterSchema } = require("../../validation/users");
 const User = require("../../models/users/user");
+const { EMAIL } = process.env;
 
 const register = async (req, res, next) => {
 	try {
@@ -50,6 +51,7 @@ const register = async (req, res, next) => {
 
 		const mail = {
 			to: email,
+			from: EMAIL,
 			subject: "Email verification",
 			html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Click</a>`,
 		};
