@@ -1,8 +1,11 @@
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
+const { v4: uuid } = require("uuid");
+const { sendEmail } = require("../../helpers");
 
 const { joiUserRegisterSchema } = require("../../validation/users");
 const User = require("../../models/users/user");
+const { EMAIL } = process.env;
 
 const register = async (req, res, next) => {
 	try {
@@ -37,11 +40,23 @@ const register = async (req, res, next) => {
 			bcrypt.genSaltSync(10)
 		);
 
+		const verificationToken = uuid();
+
 		const result = await User.create({
 			...req.body,
 			password: hashedPassword,
 			avatarUrl,
+			verificationToken,
 		});
+
+		const mail = {
+			to: email,
+			from: EMAIL,
+			subject: "Email verification",
+			html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Click</a>`,
+		};
+
+		await sendEmail(mail);
 
 		res.status(201).json({
 			status: "success",
